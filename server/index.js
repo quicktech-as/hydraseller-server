@@ -40,4 +40,4 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-app.listen(process.env.PORT || 1337, () => console.log('HydraSeller server is running'));
+app.listen(process.env.PORT || 3000, () => console.log('HydraSeller server is running'));
