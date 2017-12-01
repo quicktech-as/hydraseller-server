@@ -51,40 +51,19 @@ app.post('/webhook', (req, res) => {
                 let text = event.message.text
                 let message = text.substring(0, 200)
                 
-                let contexts = null
-                let index = 0
-                let contextIndex = 0
-
-                contexts.forEach((value) => {
-                    if (value.from == number) {
-                        context = value.context;
-                        contextIndex = index;
-                    }
-                    
-                    index = index + 1;
-                });
-
                 console.log('Recieved message from ' + sender + ' saying \'' + message  + '\'');
 
                 conversation.message({ 
                     input: { text: message },
-                    workspace_id: process.env.WATSON_WORKSPACE_ID,
-                    context: contexts
+                    workspace_id: process.env.WATSON_WORKSPACE_ID
                 }, (err, response) => {
                     if (err) {
                         console.error(err);
                     } else {
                         // console.log(JSON.stringify(response, null, 2));
-                        if (contexts == null) {
-                            contexts.push({'from': sender, 'context': response.context})
-                        } else {
-                            contexts[contextIndex].context = response.context
-                        }
-
                         let intent = response.intents[0].intent
                         
                         if (intent == "done") {
-                            contexts.splice(contextIndex, 1)
                             // Call REST API here to save order
                         }
 
