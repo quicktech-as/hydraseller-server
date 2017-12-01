@@ -42,6 +42,6 @@ app.get('/webhook', (req, res) => {
     }
 })
 
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 3000, () => {
     console.log('HydraSeller server is running')
 });
