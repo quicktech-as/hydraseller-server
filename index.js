@@ -51,7 +51,7 @@ app.post('/webhook', (req, res) => {
                 let text = event.message.text
                 let message = text.substring(0, 200)
                 
-                let context = null
+                let contexts = null
                 let index = 0
                 let contextIndex = 0
 
@@ -69,13 +69,13 @@ app.post('/webhook', (req, res) => {
                 conversation.message({ 
                     input: { text: message },
                     workspace_id: process.env.WATSON_WORKSPACE_ID,
-                    context: context
+                    context: contexts
                 }, (err, response) => {
                     if (err) {
                         console.error(err);
                     } else {
                         // console.log(JSON.stringify(response, null, 2));
-                        if (context == null) {
+                        if (contexts == null) {
                             contexts.push({'from': sender, 'context': response.context})
                         } else {
                             contexts[contextIndex].context = response.context
