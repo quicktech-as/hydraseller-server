@@ -3,5 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "author": "Gilberto <gilberto@quicktech.no>"
+  "author": "Gilberto <gilberto@quicktech.no>",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
 }
