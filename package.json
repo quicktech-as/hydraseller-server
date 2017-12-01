@@ -6,6 +6,7 @@
   "author": "Gilberto <gilberto@quicktech.no>",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2"
   }
 }
