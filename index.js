@@ -7,11 +7,11 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const conversation = require('watson-developer-cloud/conversation/v1')
+const ConversationV1 = require('watson-developer-cloud/conversation/v1')
 
 const app = express()
 
-const conversation = new ConversationV1({
+let conversation = new ConversationV1({
     username: process.env.WS_CONVERSATION_USERNAME,
     password: process.env.WS_CONVERSATION_PASSWORD,
     version_date: ConversationV1.VERSION_DATE_2017_05_26
