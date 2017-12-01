@@ -7,8 +7,15 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
+const conversation = require('watson-developer-cloud/conversation/v1')
 
 const app = express()
+
+const conversation = new ConversationV1({
+    username: process.env.WS_CONVERSATION_USERNAME,
+    password: process.env.WS_CONVERSATION_PASSWORD,
+    version_date: ConversationV1.VERSION_DATE_2017_05_26
+});
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
@@ -42,7 +49,48 @@ app.post('/webhook', (req, res) => {
             
             if (event.message && event.message.text) {
                 let text = event.message.text
-                sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+                let message = text.substring(0, 200)
+                
+                let context = null
+                let index = 0
+                let contextIndex = 0
+
+                contexts.forEach((value) => {
+                    if (value.from == number) {
+                        context = value.context;
+                        contextIndex = index;
+                    }
+                    
+                    index = index + 1;
+                });
+
+                console.log('Recieved message from ' + sender + ' saying \'' + message  + '\'');
+
+                conversation.message({ 
+                    input: { text: message },
+                    workspace_id: process.env.WATSON_WORKSPACE_ID,
+                    context: context
+                }, (err, response) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        // console.log(JSON.stringify(response, null, 2));
+                        if (context == null) {
+                            contexts.push({'from': sender, 'context': response.context})
+                        } else {
+                            contexts[contextIndex].context = response.context
+                        }
+
+                        let intent = response.intents[0].intent
+                        
+                        if (intent == "done") {
+                            contexts.splice(contextIndex, 1)
+                            // Call REST API here to save order
+                        }
+
+                        sendTextMessage(sender, response.output.text[0])
+                    }
+                });
             }
         });
 
