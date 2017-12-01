@@ -60,7 +60,8 @@ app.post('/webhook', (req, res) => {
                     if (err) {
                         console.error(err);
                     } else {
-                        // console.log(JSON.stringify(response, null, 2));
+                        console.log(JSON.stringify(response, null, 2));
+                        
                         let intent = response.intents[0].intent
                         
                         if (intent == "done") {
