@@ -12,8 +12,8 @@ const ConversationV1 = require('watson-developer-cloud/conversation/v1')
 const app = express()
 
 let conversation = new ConversationV1({
-    username: process.env.WS_CONVERSATION_USERNAME,
-    password: process.env.WS_CONVERSATION_PASSWORD,
+    username: process.env.WATSON_CONVERSATION_USERNAME,
+    password: process.env.WATSON_CONVERSATION_PASSWORD,
     version_date: ConversationV1.VERSION_DATE_2017_05_26
 });
 
@@ -66,7 +66,6 @@ app.post('/webhook', (req, res) => {
                     index = index + 1;
                 });
 
-                  
                 console.log('Recieved message from ' + sender + ' saying \'' + message  + '\'');
 
                 conversation.message({ 
@@ -80,7 +79,7 @@ app.post('/webhook', (req, res) => {
                         console.log(JSON.stringify(response, null, 2));
                         
                         if (context == null) {
-                            contexts.push({'from': sender, 'context': response.context});
+                            contexts.push({'from': sender, 'context': response.context, 'name': 'Gilberto'});
                         } else {
                             contexts[contextIndex].context = response.context;
                         }
