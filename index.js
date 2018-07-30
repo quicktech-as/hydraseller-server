@@ -125,5 +125,5 @@ function sendTextMessage(sender, text) {
 }
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log('HydraSeller server is running')
+    console.log('QTSeller server is running')
 });
